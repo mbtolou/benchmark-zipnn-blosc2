@@ -14,12 +14,8 @@ Ensure you have the necessary system dependencies. The benchmark requires `psuti
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
-cd compression-benchmark
-
-# Install dependencies
-pip install -r requirements.txt
-# If you don't have a requirements file, use:
+git clone https://github.com/mbtolou/benchmark-zipnn-blosc2
+cd benchmark-zipnn-blosc2
 pip install psutil numpy lz4 zstandard brotli blosc2 zipnn snappy zfpy
 ```
 
