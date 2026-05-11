@@ -116,10 +116,3 @@ The results are displayed in a formatted table for easy comparison:
 
 ## Contributing
 Feel free to open issues or pull requests if you would like to add new algorithms or dataset types to the benchmarking suite.
-
----
-
-### نکاتی برای استفاده بهتر از این README:
-1. **فایل `requirements.txt`:** حتماً یک فایل با این نام بسازید و تمام کتابخانه‌هایی که استفاده کردید (`numpy`, `psutil`, `blosc2` و غیره) را داخلش لیست کنید تا کاربر با یک دستور `pip install -r requirements.txt` همه را نصب کند.
-2. **شخصی‌سازی:** بخش `<your-repo-url>` را با آدرس گیت‌هاب پروژه خود جایگزین کنید.
-3. **توضیح نتایج:** در بخش `Running the Benchmark` می‌توانید اضافه کنید که خروجی مستقیماً در کنسول نمایش داده می‌شود و نیازی به نصب ابزار جانبی ندارید.
