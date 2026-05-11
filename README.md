@@ -1,7 +1,3 @@
-این یک فایل `README.md` حرفه‌ای، مختصر و فنی برای پروژه شماست که برای استفاده در GitHub یا داکیومنت‌های داخلی پروژه طراحی شده است:
-
----
-
 # Compression Benchmark Suite for Structured Data
 
 A high-performance benchmarking tool designed to evaluate the efficiency of various compression algorithms on structured datasets, including floating-point arrays, CSVs, logs, and configuration files.
