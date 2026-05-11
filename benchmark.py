@@ -16,7 +16,7 @@ import zfpy
 import gzip
 import psutil
 import os
-
+from decimal import Decimal, getcontext
 
 print("=" * 70)
 print("Complete Compression Benchmark for Snapshot - V2")
@@ -289,6 +289,47 @@ def run_checkpoint_benchmark():
     results = benchmark_compression("Checkpoint", checkpoint, compressors_general, data_type="mixed")
     print_results("Checkpoint", results)
 
+# ====================== Decimal32 Generator ======================
+def generate_decimal32_data(num_elements: int, scale: int = 4) -> bytes:
+    """شبیه‌سازی Decimal32 ClickHouse (ذخیره به صورت Int32)"""
+    getcontext().prec = 9  # Decimal32
+    
+    # تولید اعداد واقع‌گرایانه (مثل قیمت، مقدار، درصد)
+    magnitudes = np.random.normal(0, 3, num_elements).astype(np.float64)
+    values = (10 ** magnitudes) * np.random.uniform(0.5, 2.0, num_elements)
+    
+    # اعمال scale
+    scaled = np.round(values * (10 ** scale)).astype(np.int32)
+    return scaled.tobytes()
+
+def run_model_weights_benchmarks():
+    print_section_header(5, "MODEL WEIGHTS (FP16)", "")
+    sizes = [100_000, 1_000_000, 5_000_000]
+    
+    for num_elements in sizes:
+        print(f"\n--- {num_elements:,} elements FP16 ---")
+        data = np.random.randn(num_elements).astype(np.float16) * 0.05
+        data_bytes = data.tobytes()
+        print(f"Raw Size: {len(data_bytes)/1024/1024:.2f} MB")
+        
+        results = benchmark_compression(f"FP16_{num_elements}", data_bytes, compressors_general, data_type="float16")
+        print_results(f"FP16 Weights", results)
+
+
+def run_decimal_benchmarks():
+    print_section_header(6, "DECIMAL32 BENCHMARKS", "")
+    sizes = [25_000, 500_000, 4_000_000 ]
+    scales = [0, 2, 5, 7]
+    
+    for num in sizes:
+        for scale in scales:
+            print(f"\n--- Decimal32 | {num:,} elements | Scale = {scale} ---")
+            data = generate_decimal32_data(num, scale)
+            print(f"Raw Size: {len(data)/1024/1024:.2f} MB")
+            
+            results = benchmark_compression(f"Dec32_s{scale}", data, compressors_general, data_type="decimal32")
+            print_results(f"Decimal32 (scale={scale})", results)
+
 def main():
     print("=" * 70)
     
@@ -298,6 +339,7 @@ def main():
     run_csv_data_benchmark()
     run_model_weights_benchmarks()
     run_checkpoint_benchmark()
+    run_decimal_benchmarks()
     
     print("\n" + "=" * 70)
     print("BENCHMARK RESULT")
